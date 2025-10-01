@@ -1,2 +1,2 @@
 # Kalkulator
-Kalkulator
+Kalkulator git init
