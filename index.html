@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kalkulator UI Tombol Penuh</title>
+    <style>
+      body {
+        background: #eceff1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+      }
+
+      .calculator {
+        background: #111;
+        padding: 4px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+        width: 300px;
+      }
+
+      .display {
+        background: #000;
+        color: rgb(255, 255, 255);
+        font-size: 32px;
+        text-align: right;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        min-height: 200px;
+        overflow-x: auto;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      button {
+        font-size: 40px;
+        padding: 5px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        background: #111;
+        color: #fff;
+        transition: 0.2s;
+      }
+
+      button:hover {
+        background: #333;
+      }
+
+      .operator {
+        color: #0f0;
+        font-weight: bold;
+      }
+
+      .equal {
+        background: #00c853;
+        color: #fff;
+        grid-row: span 2;
+        border-radius: 50%;
+      }
+
+      .clear {
+        background: #cc0000;
+        color: #fff;
+        border-radius: 100px;
+        grid-column: span 2;
+      }
+
+      .clear2 {
+        background: #363f37;
+        color: #fff;
+        border-radius: 100px;
+        grid-column: span 2;
+        align-items: start;
+        justify-content: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator">
+      <div id="display" class="display">0</div>
+      <div class="buttons">
+        <button class="clear" onclick="clearAll()">CE</button>
+        <button class="operator" onclick="setOperator('*')">×</button>
+        <button onclick="deleteChar()">⌫</button>
+
+        <button onclick="appendNumber('7')">7</button>
+        <button onclick="appendNumber('8')">8</button>
+        <button onclick="appendNumber('9')">9</button>
+        <button class="operator" onclick="setOperator('/')">÷</button>
+
+        <button onclick="appendNumber('4')">4</button>
+        <button onclick="appendNumber('5')">5</button>
+        <button onclick="appendNumber('6')">6</button>
+        <button class="operator" onclick="setOperator('-')">-</button>
+
+        <button onclick="appendNumber('1')">1</button>
+        <button onclick="appendNumber('2')">2</button>
+        <button onclick="appendNumber('3')">3</button>
+        <button class="operator" onclick="setOperator('+')">+</button>
+
+        <button class="clear2" onclick="appendNumber('0')">0</button>
+        <button onclick="appendNumber('.')">,</button>
+        <button class="equal" onclick="calculate()">=</button>
+      </div>
+    </div>
+
+    <script>
+      let display = document.getElementById("display");
+      let angka1 = null;
+      let angka2 = null;
+      let operator = null;
+      let resetDisplay = false;
+
+      function appendNumber(num) {
+        if (resetDisplay) {
+          display.innerHTML = "";
+          resetDisplay = false;
+        }
+        if (display.innerHTML === "0" && num !== ".") {
+          display.innerHTML = num;
+        } else {
+          display.innerHTML += num;
+        }
+      }
+
+      function setOperator(op) {
+        if (operator !== null) {
+          calculate();
+        }
+        angka1 = parseFloat(display.innerHTML.replace(",", "."));
+        operator = op;
+        resetDisplay = true;
+      }
+
+      function calculate() {
+        if (operator === null || resetDisplay) return;
+        angka2 = parseFloat(display.innerHTML.replace(",", "."));
+        let result;
+
+        switch (operator) {
+          case "+":
+            result = angka1 + angka2;
+            break;
+          case "-":
+            result = angka1 - angka2;
+            break;
+          case "*":
+            result = angka1 * angka2;
+            break;
+          case "/":
+            if (angka2 === 0) {
+              display.innerHTML = "Error";
+              operator = null;
+              return;
+            }
+            result = angka1 / angka2;
+            break;
+        }
+
+        display.innerHTML = result;
+        angka1 = result;
+        operator = null;
+        resetDisplay = true;
+      }
+
+      function clearAll() {
+        display.innerHTML = "0";
+        angka1 = null;
+        angka2 = null;
+        operator = null;
+      }
+
+      function deleteChar() {
+        if (display.innerHTML.length > 1) {
+          display.innerHTML = display.innerHTML.slice(0, -1);
+        } else {
+          display.innerHTML = "0";
+        }
+      }
+    </script>
+  </body>
+</html>
